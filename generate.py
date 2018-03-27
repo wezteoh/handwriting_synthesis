@@ -6,6 +6,10 @@ from utils2 import plot_stroke
 
 def generate_unconditionally(model, cell_size=400, num_clusters=20, steps=800, random_seed=1, state_dict_file='save/rand_write_best.pt'):
     
+    # use gpu
+    cuda = torch.cuda.is_available()
+    
+    # load trained model weights
     model.load_state_dict(torch.load(state_dict_file)['model'])
     
     np.random.seed(random_seed)
