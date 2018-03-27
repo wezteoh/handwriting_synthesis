@@ -160,7 +160,7 @@ def rand_write_train(args, train_loader, validation_loader):
         save_checkpoint(epoch, model, validation_loss, optimizer, args.model_dir, filename)
     
         # testing checkpoints
-        state = torch.load(filename)
+        state = torch.load(os.path.join(args.model_dir, filename))
         model.load_state_dict(state['model'])
         optimizer.load_state_dict(state['optimizer'])
         
