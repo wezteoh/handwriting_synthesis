@@ -104,12 +104,12 @@ def rand_write_train(args, train_loader, validation_loader):
             optimizer.zero_grad()
             # feed forward
             outputs = model(x, (h1_init, c1_init), (h2_init, c2_init))
-            end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, p , prev, prev2 = outputs
+            end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho , prev, prev2 = outputs
             
             # supervision
             data = data.narrow(1,1,args.timesteps)
             y = Variable(data, requires_grad=False)
-            loss = -log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, p, y, masks)/torch.sum(masks)
+            loss = -log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, y, masks)/torch.sum(masks)
             loss.backward()
             train_loss += loss.data[0]
             optimizer.step()
@@ -137,8 +137,8 @@ def rand_write_train(args, train_loader, validation_loader):
         y = Variable(validation_samples, requires_grad = False)
         
         outputs = model(y, (h1_init, c1_init), (h2_init, c2_init))
-        end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, p , prev, prev2 = outputs 
-        loss = -log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, p, y2, masks)/torch.sum(masks)
+        end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho , prev, prev2 = outputs 
+        loss = -log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, y, masks)/torch.sum(masks)
         validation_loss = loss.data[0]
         print('====> Epoch: {} Average validation loss: {:.4f}'.format(\
             epoch+1, validation_loss))
