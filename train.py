@@ -151,7 +151,7 @@ def rand_write_train(args, train_loader, validation_loader):
             save_checkpoint(epoch, model, validation_loss, optimizer, args.model_dir)
         
         # learning rate annealing
-        if (epochs+1)%10 == 0:
+        if (epoch+1)%10 == 0:
             optimizer = decay_learning_rate(optimizer)
         
         # checkpoint model and training
