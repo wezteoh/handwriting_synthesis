@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from torch.autograd import Variable
-from utils2 import plot_stroke
+from utilz import plot_stroke
 
 
 def generate_unconditionally(model, cell_size=400, num_clusters=20, steps=800, random_seed=1, state_dict_file='save/rand_write_best.pt'):
