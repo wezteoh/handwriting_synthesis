@@ -18,6 +18,7 @@ def generate_unconditionally(model, cell_size=400, num_clusters=20, steps=800, r
     # initialize null hidden states and memory states
     init_states = [torch.zeros((1,1, cell_size))]*4
     if cuda:
+        model.cuda()
         zero_tensor = zero_tensor.cuda()
         init_states  = [state.cuda() for state in init_states]
     x = Variable(zero_tensor)
