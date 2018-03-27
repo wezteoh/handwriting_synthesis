@@ -7,7 +7,7 @@ import torch.nn.functional as F
 # 2-layer lstm with mixture of gaussian parameters as outputs
 # with skip connections
 class LSTMRandWriter(nn.Module):
-    def __init__(self, args, cell_size=400, num_clusters=20):
+    def __init__(self, args=None, cell_size=400, num_clusters=20):
         super(LSTMRandWriter, self).__init__()
         
         if args:
