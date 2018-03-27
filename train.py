@@ -169,8 +169,8 @@ def rand_write_train(args, train_loader, validation_loader):
         print('wall time: {}s'.format(time.time()-start_time))
         
     f1 = plt.figure(1)
-    plt.plot(range(1, args.num_epochs), t_loss, color='blue', linestyle='solid')
-    plt.plot(range(1, args.num_epochs), v_loss, color='red', linestyle='solid')
+    plt.plot(range(1, args.num_epochs+1), t_loss, color='blue', linestyle='solid')
+    plt.plot(range(1, args.num_epochs+1), v_loss, color='red', linestyle='solid')
     f1.savefig("loss_curves", bbox_inches='tight')
     
     
