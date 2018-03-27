@@ -150,7 +150,7 @@ def rand_write_train(args, train_loader, validation_loader):
     
         if validation_loss < best_validation_loss:
             best_validation_loss = validation_loss
-            save_checkpoint(epoch, model, validation_loss, optimizer, args.model_dir)
+            save_checkpoint(epoch, model, validation_loss, optimizer, args.model_dir, args.task + '_best.pt')
         
         # learning rate annealing
         if (epoch+1)%10 == 0:
@@ -171,7 +171,7 @@ def rand_write_train(args, train_loader, validation_loader):
     f1 = plt.figure(1)
     plt.plot(range(1, args.num_epochs+1), t_loss, color='blue', linestyle='solid')
     plt.plot(range(1, args.num_epochs+1), v_loss, color='red', linestyle='solid')
-    f1.savefig("loss_curves", bbox_inches='tight')
+    f1.savefig(args.task +"_loss_curves", bbox_inches='tight')
     
     
 # training objective
