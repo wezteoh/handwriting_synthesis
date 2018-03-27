@@ -4,13 +4,15 @@ from torch.autograd import Variable
 from utils2 import plot_stroke
 
 
-def generate_unconditionally(model, steps=800, random_seed=1, state_dict_file='save/best.pt'):
+def generate_unconditionally(model, cell_size=400, num_clusters=20, steps=800, random_seed=1, state_dict_file='save/best.pt'):
+    
+    model.load(state_dict_file['model'])
     
     np.random.seed(random_seed)
     zero_tensor = torch.zeros((1,1,3))
     
     # initialize null hidden states and memory states
-    init_states = [torch.zeros((1,1,args.cell_size))]*4
+    init_states = [torch.zeros((1,1, cell_size))]*4
     if cuda:
         zero_tensor = zero_tensor.cuda()
         init_states  = [state.cuda() for state in init_states]
