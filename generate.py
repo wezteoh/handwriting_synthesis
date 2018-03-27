@@ -4,9 +4,9 @@ from torch.autograd import Variable
 from utils2 import plot_stroke
 
 
-def generate_unconditionally(model, cell_size=400, num_clusters=20, steps=800, random_seed=1, state_dict_file='save/best.pt'):
+def generate_unconditionally(model, cell_size=400, num_clusters=20, steps=800, random_seed=1, state_dict_file='save/rand_write_best.pt'):
     
-    model.load(state_dict_file['model'])
+    model.load_state_dict(state_dict_file['model'])
     
     np.random.seed(random_seed)
     zero_tensor = torch.zeros((1,1,3))
