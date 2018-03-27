@@ -100,6 +100,7 @@ def rand_write_train(args, train_loader, validation_loader):
             step_back = data.narrow(1,0,args.timesteps)
             x = Variable(step_back, requires_grad=False)
             masks = Variable(masks, requires_grad=False)
+            masks = masks.narrow(1,0,args.timesteps)
             
             optimizer.zero_grad()
             # feed forward
@@ -130,6 +131,7 @@ def rand_write_train(args, train_loader, validation_loader):
         (validation_samples, masks, onehots) = list(enumerate(validation_loader))[0][1]
         step_back2 = validation_samples.narrow(1,0,args.timesteps)
         masks = Variable(masks, requires_grad=False)
+        masks = masks.narrow(1,0,args.timesteps)
         
         x = Variable(step_back2, requires_grad=False)
         
