@@ -3,6 +3,7 @@ import os
 import pickle
 import time
 import numpy as np
+import matplotlib.pyplot as plt 
 
 # import pytorch modules
 import torch
