@@ -136,7 +136,7 @@ def rand_write_train(args, train_loader, validation_loader):
         validation_samples = validation_samples.narrow(1,1,args.timesteps)
         y = Variable(validation_samples, requires_grad = False)
         
-        outputs = model(y, (h1_init2, c1_init2), (h2_init2, c2_init2))
+        outputs = model(y, (h1_init, c1_init), (h2_init, c2_init))
         end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, p , prev, prev2 = outputs 
         loss = -log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, p, y2, masks)/torch.sum(masks)
         validation_loss = loss.data[0]
@@ -163,6 +163,11 @@ def rand_write_train(args, train_loader, validation_loader):
         optimizer.load_state_dict(state['optimizer'])
         
         print('wall time: {}s'.format(time.time()-start_time))
+        
+    f1 = plt.figure(1)
+    plt.plot(range(1, args.num_epochs), t_loss, color='blue', linestyle='solid')
+    plt.plot(range(1, args.num_epochs), v_loss, color='red', linestyle='solid')
+    f1.savefig("loss_curves", bbox_inches='tight')
     
     
 # training objective
