@@ -209,10 +209,11 @@ def synthesis_train(args, train_loader, validation_loader):
         for batch_idx, (data, masks, onehots, text_lens) in enumerate(train_loader):
             
             # gather training batch
-            step_back = data.narrow(1,0,timesteps)
+            step_back = data.narrow(1,0,args.timesteps)
             x = Variable(step_back, requires_grad=False)
             onehots = Variable(onehots, requires_grad = False)
             masks = Variable(masks, requires_grad=False)
+            masks = masks.narrow(1,0,args.timesteps)
             text_lens = Variable(text_lens, requires_grad=False)
             
             # focus window weight on first text char
@@ -223,7 +224,7 @@ def synthesis_train(args, train_loader, validation_loader):
             # feed forward
             outputs = model(x,onehots, text_lens, w_old, kappa_old, (h1_init, c1_init), (h2_init, c2_init))
             end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, w, kappa, prev, prev2, old_phi = outputs
-            data = data.narrow(1,1,timesteps)
+            data = data.narrow(1,1,args.timesteps)
             y = Variable(data, requires_grad=False)
             loss = -log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, y, masks)/torch.sum(masks)
             loss.backward()
@@ -242,16 +243,16 @@ def synthesis_train(args, train_loader, validation_loader):
         # validation
         # prepare validation data
         (validation_samples, masks, onehots, text_lens) = list(enumerate(validation_loader))[0][1]
-        step_back = validation_samples.narrow(1,0,timesteps)
+        step_back = validation_samples.narrow(1,0,args.timesteps)
         masks = Variable(masks, requires_grad=False)
-        masks = masks.narrow(1,0,timesteps)
+        masks = masks.narrow(1,0,args.timesteps)
         onehots = Variable(onehots, requires_grad=False)
         text_lens = Variable(text_lens, requires_grad=False)
         
         w_old = onehots.narrow(1,0,1).squeeze()
         x = Variable(step_back, requires_grad=False)
         
-        validation_samples = validation_samples.narrow(1,1,timesteps)
+        validation_samples = validation_samples.narrow(1,1,args.timesteps)
         y = Variable(validation_samples, requires_grad = False)
     
         outputs = model(x2, onehots, text_lens, w_old, kappa_old, (h1_init2, c1_init2), (h2_init2, c2_init2))
