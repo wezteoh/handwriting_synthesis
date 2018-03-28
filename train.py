@@ -255,9 +255,9 @@ def synthesis_train(args, train_loader, validation_loader):
         validation_samples = validation_samples.narrow(1,1,args.timesteps)
         y = Variable(validation_samples, requires_grad = False)
     
-        outputs = model(x2, onehots, text_lens, w_old, kappa_old, (h1_init2, c1_init2), (h2_init2, c2_init2))
+        outputs = model(x, onehots, text_lens, w_old, kappa_old, (h1_init2, c1_init2), (h2_init2, c2_init2))
         end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, w, kappa, prev, prev2, old_phi = outputs
-        loss = -log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, y2, masks)/torch.sum(masks)
+        loss = -log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, y, masks)/torch.sum(masks)
         validation_loss = loss.data[0]
         print('====> Epoch: {} Average validation loss: {:.4f}'.format(\
             epoch+1, validation_loss))
