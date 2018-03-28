@@ -291,11 +291,10 @@ def log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, \
     
     # new stroke point prediction
     const = 1E-20 # to prevent numerical error
-    # pi_term = torch.Tensor([2*np.pi])
-    # if cuda:
-    #     pi_term = pi_term.cuda()
-    # pi_term = -Variable(pi_term, requires_grad = False).log()
-    pi_term = -np.log(2*np.pi)
+    pi_term = torch.Tensor([2*np.pi])
+    if cuda:
+        pi_term = pi_term.cuda()
+    pi_term = -Variable(pi_term, requires_grad = False).log()
     
     z = (y_1 - mu_1)**2/(log_sigma_1.exp()**2)\
         + ((y_2 - mu_2)**2/(log_sigma_2.exp()**2)) \
