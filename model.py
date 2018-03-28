@@ -4,6 +4,8 @@ from torch.autograd import Variable
 import torch.nn as nn
 import torch.nn.functional as F
 
+import numpy as np
+
 cuda = torch.cuda.is_available()
 
 # 2-layer lstm with mixture of gaussian parameters as outputs
@@ -52,9 +54,6 @@ class Window(nn.Module):
         
         alpha, beta, pre_kappa = params.chunk(3, dim=-1)
         kappa = kappa_old + pre_kappa
-        # alpha = params.narrow(-1, 0, K).exp()
-        # beta = params.narrow(-1, K, K).exp()
-        # kappa = kappa_old + params.narrow(-1, 2*K, K).exp() 
         
         indices = torch.from_numpy(np.array(range(self.padded_text_len + 1))).type(torch.FloatTensor)
         if cuda:
@@ -122,13 +121,5 @@ class LSTMSynthesis(nn.Module):
         weights = F.softmax(pre_weights*(1+bias), dim=-1)
         rho = self.tanh(pre_rho)
         end = F.sigmoid(params.narrow(-1, params.size()[-1]-1, 1))
-        
-        # weights = F.softmax(params.narrow(-1, 0, num_clusters)*(1+bias), dim=-1)
-        # mu_1 = params.narrow(-1, num_clusters, num_clusters)
-        # mu_2 = params.narrow(-1, 2*num_clusters, num_clusters)
-        # log_sigma_1 = params.narrow(-1, 3*num_clusters, num_clusters)
-        # log_sigma_2 = params.narrow(-1, 4*num_clusters, num_clusters)
-        # rho = self.tanh(params.narrow(-1, 5*num_clusters, num_clusters))
-        # end = F.sigmoid(params.narrow(-1, 6*num_clusters, 1))
         
         return end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, w_old, kappa_old, prev, prev2, old_phi
