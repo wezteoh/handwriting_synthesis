@@ -53,7 +53,7 @@ class LSTMRandWriter(nn.Module):
             
 # attention window for handwriting synthesis
 class Window(nn.Module):
-    def __init__(self, padded_text_len, K):
+    def __init__(self, padded_text_len, cell_size, K):
         super(Window, self).__init__()
         self.linear = nn.Linear(cell_size, 3*K)
         self.padded_text_len = text_len
@@ -81,7 +81,7 @@ class LSTM1(nn.Module):
     def __init__(self, padded_text_len, vocab_len, cell_size, K):
         super(LSTM1, self).__init__()
         self.lstm = nn.LSTMCell(input_size = 3 + vocab_len, hidden_size = cell_size)
-        self.window = Window(padded_text_len, K)
+        self.window = Window(padded_text_len, cell_size, K)
         
     def forward(self, x, onehots, text_lens, w_old, kappa_old, prev):
         h1s = []
