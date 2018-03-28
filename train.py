@@ -14,8 +14,8 @@ import torch.optim as optim
 import torch.utils.data
 
 # import model and utilities
-from model import *
-from utilz import *
+from model import LSTMRandWriter, LSTMSynthesis
+from utilz import decay_learning_rate, save_checkpoint
 
 # find gpu
 cuda = torch.cuda.is_available()

@@ -7,7 +7,7 @@ import torch.nn.functional as F
 # 2-layer lstm with mixture of gaussian parameters as outputs
 # with skip connections
 class LSTMRandWriter(nn.Module):
-    def __init__(self, cell_size=400, num_clusters=20):
+    def __init__(self, cell_size, num_clusters):
         super(LSTMRandWriter, self).__init__()
         
         self.lstm = nn.LSTM(input_size = 3, hidden_size = cell_size,\
@@ -116,7 +116,7 @@ class LSTM2(nn.Module):
 # 2-layer lstm with mixture of gaussian parameters as outputs
 # with skip connections
 class LSTMSynthesis(nn.Module):
-    def __init__(self, padded_text_len, vocab_len, cell_size=400, num_clusters=20, K=10):
+    def __init__(self, padded_text_len, vocab_len, cell_size, num_clusters, K):
         super(LSTMSynthesis, self).__init__()
         self.lstm1 = LSTM1(padded_text_len, vocab_len, cell_size)
         self.lstm2 = LSTM2(vocab_len, cell_size)
