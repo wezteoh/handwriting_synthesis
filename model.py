@@ -78,10 +78,10 @@ class Window(nn.Module):
         return w, kappa, phi
 
 class LSTM1(nn.Module):
-    def __init__(self, padded_text_len, vocab_len, cell_size):
+    def __init__(self, padded_text_len, vocab_len, cell_size, K):
         super(LSTM1, self).__init__()
         self.lstm = nn.LSTMCell(input_size = 3 + vocab_len, hidden_size = cell_size)
-        self.window = Window(padded_text_len)
+        self.window = Window(padded_text_len, K)
         
     def forward(self, x, onehots, text_lens, w_old, kappa_old, prev):
         h1s = []
@@ -118,7 +118,7 @@ class LSTM2(nn.Module):
 class LSTMSynthesis(nn.Module):
     def __init__(self, padded_text_len, vocab_len, cell_size, num_clusters, K):
         super(LSTMSynthesis, self).__init__()
-        self.lstm1 = LSTM1(padded_text_len, vocab_len, cell_size)
+        self.lstm1 = LSTM1(padded_text_len, vocab_len, cell_size, K)
         self.lstm2 = LSTM2(vocab_len, cell_size)
         self.linear = nn.Linear(cell_size*2, 1+ num_clusters*6)
         self.tanh = nn.Tanh()
