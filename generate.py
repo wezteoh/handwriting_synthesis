@@ -114,7 +114,7 @@ def generate_conditionally(text, cell_size=400, num_clusters=20, K=10, random_st
         prob_end = end.data[0][0][0]
         sample_end = np.random.binomial(1,prob_end)
 
-    `   #mog sample
+        #mog sample
         sample_index = np.random.choice(range(20),p = weights.data[0][0].cpu().numpy())
         mu = np.array([mu_1.data[0][0][sample_index], mu_2.data[0][0][sample_index]])
         log_sigma_1 = log_sigma_1 - bias2
