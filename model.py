@@ -30,7 +30,7 @@ class LSTMRandWriter(nn.Module):
 
         
         mog_params = params.narrow(-1, 0, params.size()[-1]-1)
-        pre_weights, mu_1, mu_2, log_sigma_1, log_sigma_2, pre_rho, pre_end = mog_params.chunk(6, dim=-1)
+        pre_weights, mu_1, mu_2, log_sigma_1, log_sigma_2, pre_rho = mog_params.chunk(6, dim=-1)
         weights = F.softmax(pre_weights*(1+bias), dim=-1)
         rho = self.tanh(pre_rho)
         end = F.sigmoid(params.narrow(-1, params.size()[-1]-1, 1))
@@ -129,7 +129,7 @@ class LSTMSynthesis(nn.Module):
         
         params = self.linear(torch.cat([h1s,h2s], dim=-1))
         mog_params = params.narrow(-1, 0, params.size()[-1]-1)
-        pre_weights, mu_1, mu_2, log_sigma_1, log_sigma_2, pre_rho, pre_end = mog_params.chunk(6, dim=-1)
+        pre_weights, mu_1, mu_2, log_sigma_1, log_sigma_2, pre_rho = mog_params.chunk(6, dim=-1)
         weights = F.softmax(pre_weights*(1+bias), dim=-1)
         rho = self.tanh(pre_rho)
         end = F.sigmoid(params.narrow(-1, params.size()[-1]-1, 1))
