@@ -237,8 +237,8 @@ def synthesis_train(args, train_loader, validation_loader):
                     loss.data[0]))
     
         print('====> Epoch: {} Average train loss: {:.4f}'.format(
-            epoch+1, train_loss/(len(train_loader.dataset)//bsize)))
-        t_loss.append(train_loss/(len(train_loader.dataset)//bsize))
+            epoch+1, train_loss/(len(train_loader.dataset)//args.batch_size)))
+        t_loss.append(train_loss/(len(train_loader.dataset)//args.batch_size))
         
         # validation
         # prepare validation data
