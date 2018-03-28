@@ -135,7 +135,7 @@ def rand_write_train(args, train_loader, validation_loader):
         
         # validation
         # prepare validation sample data
-        (validation_samples, masks, onehots) = list(enumerate(validation_loader))[0][1]
+        (validation_samples, masks, onehots, text_masks) = list(enumerate(validation_loader))[0][1]
         step_back2 = validation_samples.narrow(1,0,args.timesteps)
         masks = Variable(masks, requires_grad=False)
         masks = masks.narrow(1,0,args.timesteps)
@@ -164,11 +164,6 @@ def rand_write_train(args, train_loader, validation_loader):
         # checkpoint model and training
         filename = args.task + '_epoch_{}.pt'.format(epoch+1)
         save_checkpoint(epoch, model, validation_loss, optimizer, args.model_dir, filename)
-    
-        # # testing checkpoints
-        # state = torch.load(os.path.join(args.model_dir, filename))
-        # model.load_state_dict(state['model'])
-        # optimizer.load_state_dict(state['optimizer'])
         
         print('wall time: {}s'.format(time.time()-start_time))
         
@@ -275,11 +270,6 @@ def synthesis_train(args, train_loader, validation_loader):
         # checkpoint model and training
         filename = args.task + '_epoch_{}.pt'.format(epoch+1)
         save_checkpoint(epoch, model, validation_loss, optimizer, args.model_dir, filename)
-    
-        # # testing checkpoints
-        # state = torch.load(os.path.join(args.model_dir, filename))
-        # model.load_state_dict(state['model'])
-        # optimizer.load_state_dict(state['optimizer'])
         
         print('wall time: {}s'.format(time.time()-start_time))
         
@@ -301,15 +291,15 @@ def log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, \
     
     # new stroke point prediction
     const = 1E-20 # to prevent numerical error
-    pi_term = torch.Tensor([2*np.pi])
-    if cuda:
-        pi_term = pi_term.cuda()
-    pi_term = -Variable(pi_term, requires_grad = False).log()
+    # pi_term = torch.Tensor([2*np.pi])
+    # if cuda:
+    #     pi_term = pi_term.cuda()
+    # pi_term = -Variable(pi_term, requires_grad = False).log()
     
     z = (y_1 - mu_1)**2/(log_sigma_1.exp()**2)\
         + ((y_2 - mu_2)**2/(log_sigma_2.exp()**2)) \
         - 2*rho*(y_1-mu_1)*(y_2-mu_2)/((log_sigma_1 + log_sigma_2).exp())
-    mog_lik1 =  pi_term -log_sigma_1 - log_sigma_2 - 0.5*((1-rho**2).log())
+    mog_lik1 =  2*np.pi -log_sigma_1 - log_sigma_2 - 0.5*((1-rho**2).log())
     mog_lik2 = z/(2*(1-rho**2))
     mog_loglik = ((weights.log() + (mog_lik1 - mog_lik2)).exp().sum(dim=-1)+const).log()
     
