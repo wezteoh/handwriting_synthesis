@@ -66,7 +66,7 @@ def generate_conditionally(text, cell_size=400, num_clusters=20, K=10, random_st
     text = text + ' '
     
     model = LSTMSynthesis(len(text), len(char_to_code)+1, cell_size, num_clusters, K)
-    model.load_state_dict(torch.load(state_dict_file['model']))
+    model.load_state_dict(torch.load(state_dict_file)['model'])
     
     onehots = np.zeros((len(text), len(char_to_code)+1))
     for _ in range(len(text)):
