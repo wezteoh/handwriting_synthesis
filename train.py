@@ -54,7 +54,7 @@ def main():
     train_data = [(train_data[0][i], train_data[1][i], 
                 train_data[2][i], train_data[3][i]) for i in range(len(train_data[0]))] 
     train_loader = torch.utils.data.DataLoader(
-        train_data, batch_size=bsize, shuffle=True, drop_last=True)
+        train_data, batch_size=args.batch_size, shuffle=True, drop_last=True)
         
     # prepare validation data
     validation_data = [np.load('validation_strokes_800.npy'), np.load('validation_masks_800.npy'), 
@@ -66,7 +66,7 @@ def main():
     validation_data = [(validation_data[0][i], validation_data[1][i], validation_data[2][i], validation_data[3][i]) 
                     for i in range(len(validation_data[0]))] 
     validation_loader = torch.utils.data.DataLoader(
-        validation_data, batch_size=bsize, shuffle=True, drop_last=True)
+        validation_data, batch_size=args.batch_size, shuffle=True, drop_last=True)
     
     
     # training
