@@ -3,6 +3,7 @@ import torch
 from torch.autograd import Variable
 from utilz import plot_stroke
 from model import LSTMRandWriter, LSTMSynthesis
+import matplotlib.pyplot as plt 
 
 # find gpu 
 cuda = torch.cuda.is_available()
