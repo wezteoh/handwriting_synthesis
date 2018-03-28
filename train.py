@@ -239,7 +239,7 @@ def synthesis_train(args, train_loader, validation_loader):
         print('====> Epoch: {} Average train loss: {:.4f}'.format(
             epoch+1, train_loss/(len(train_loader.dataset)//args.batch_size)))
         t_loss.append(train_loss/(len(train_loader.dataset)//args.batch_size))
-        
+    
         # validation
         # prepare validation data
         (validation_samples, masks, onehots, text_lens) = list(enumerate(validation_loader))[0][1]
@@ -274,11 +274,11 @@ def synthesis_train(args, train_loader, validation_loader):
         
         print('wall time: {}s'.format(time.time()-start_time))
         
-        f1 = plt.figure(1)
-        plt.plot(range(1, args.num_epochs+1), t_loss, color='blue', linestyle='solid')
-        plt.plot(range(1, args.num_epochs+1), v_loss, color='red', linestyle='solid')
-        f1.savefig(args.task +"_loss_curves", bbox_inches='tight')
-
+    f1 = plt.figure(1)
+    plt.plot(range(1, args.num_epochs+1), t_loss, color='blue', linestyle='solid')
+    plt.plot(range(1, args.num_epochs+1), v_loss, color='red', linestyle='solid')
+    f1.savefig(args.task +"_loss_curves", bbox_inches='tight')
+    
 # training objective
 def log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, \
                     y, masks):
