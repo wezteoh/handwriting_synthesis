@@ -96,7 +96,6 @@ def generate_conditionally(text, cell_size=400, num_clusters=20, K=10, random_st
     h2_init, c2_init = Variable(h2_init), Variable(c2_init)
     prev = (h1_init, c1_init)
     prev2 = (h2_init, c2_init)
-    w_old = Variable(w_old)
     kappa_old = Variable(kappa_old)
     onehots = Variable(onehots, requires_grad = False)
     w_old = onehots.narrow(0,0,1)  # attention on the first input text char
