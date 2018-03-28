@@ -36,19 +36,6 @@ class LSTMRandWriter(nn.Module):
         weights = F.softmax(pre_weights, dim=-1)
         rho = self.tanh(pre_rho)
         end = F.sigmoid(params.narrow(-1, params.size()[-1]-1, 1))
-        # 
-        # weights = F.softmax(params.narrow(-1, 0, self.num_clusters), dim=-1)
-        # 
-        # # MoG parameters
-        # mu_1 = params.narrow(-1, self.num_clusters, self.num_clusters)
-        # mu_2 = params.narrow(-1, 2*self.num_clusters, self.num_clusters)
-        # log_sigma_1 = params.narrow(-1, 3*self.num_clusters, self.num_clusters)
-        # log_sigma_2 = params.narrow(-1, 4*self.num_clusters, self.num_clusters)
-        # rho = self.tanh(params.narrow(-1, 5*self.num_clusters, \
-        #                 self.num_clusters))
-        # 
-        # # Bernoulli parameter
-        # end = F.sigmoid(params.narrow(-1, 6*self.num_clusters, 1))
         
         return end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2,\
             rho, (h1_n, c1_n), (h2_n, c2_n)
@@ -63,7 +50,7 @@ class Window(nn.Module):
     def forward(self, x, kappa_old, onehots, text_lens):
         params = self.linear(x).exp()
         
-        alpha, beta, pre_kappa = params.chunck(3, dim=-1)
+        alpha, beta, pre_kappa = params.chunk(3, dim=-1)
         kappa = kappa_old + pre_kappa
         # alpha = params.narrow(-1, 0, K).exp()
         # beta = params.narrow(-1, K, K).exp()
