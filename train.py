@@ -66,7 +66,7 @@ def main():
     validation_data = [(validation_data[0][i], validation_data[1][i], validation_data[2][i], validation_data[3][i]) 
                     for i in range(len(validation_data[0]))] 
     validation_loader = torch.utils.data.DataLoader(
-        validation_data, batch_size=args.batch_size, shuffle=True, drop_last=True)
+        validation_data, batch_size=300, shuffle=True, drop_last=True)
     
     
     # training

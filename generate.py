@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # find gpu 
 cuda = torch.cuda.is_available()
 
-def generate_unconditionally(cell_size=400, num_clusters=20, steps=800, random_state=42, state_dict_file='save/rand_write_best.pt'):
+def generate_unconditionally(cell_size=400, num_clusters=20, steps=800, random_state=700, state_dict_file='save/rand_write_best.pt'):
     
     model = LSTMRandWriter(cell_size, num_clusters)
     # load trained model weights
@@ -59,7 +59,7 @@ def generate_unconditionally(cell_size=400, num_clusters=20, steps=800, random_s
     
     
 
-def generate_conditionally(text, cell_size=400, num_clusters=20, K=10, random_state=42, \
+def generate_conditionally(text, cell_size=400, num_clusters=20, K=10, random_state=700, \
                             bias=1., bias2=1., state_dict_file='save/synthesis_best.pt'):
     
     char_to_code = torch.load('char_to_code.pt')
@@ -151,7 +151,7 @@ def generate_conditionally(text, cell_size=400, num_clusters=20, K=10, random_st
 
 
 def attention_plot(phis):
-    plt.rcParams["figure.figsize"] = (16,8)
+    plt.rcParams["figure.figsize"] = (12,6)
     phis= phis/(np.sum(phis, axis = 0, keepdims=True))
     plt.xlabel('handwriting generation')
     plt.ylabel('text scanning')
