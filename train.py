@@ -295,11 +295,12 @@ def log_likelihood(end, weights, mu_1, mu_2, log_sigma_1, log_sigma_2, rho, \
     # if cuda:
     #     pi_term = pi_term.cuda()
     # pi_term = -Variable(pi_term, requires_grad = False).log()
+    pi_term = -np.log(2*np.pi)
     
     z = (y_1 - mu_1)**2/(log_sigma_1.exp()**2)\
         + ((y_2 - mu_2)**2/(log_sigma_2.exp()**2)) \
         - 2*rho*(y_1-mu_1)*(y_2-mu_2)/((log_sigma_1 + log_sigma_2).exp())
-    mog_lik1 =  -np.log(2*np.pi) -log_sigma_1 - log_sigma_2 - 0.5*((1-rho**2).log())
+    mog_lik1 =  pi_term -log_sigma_1 - log_sigma_2 - 0.5*((1-rho**2).log())
     mog_lik2 = z/(2*(1-rho**2))
     mog_loglik = ((weights.log() + (mog_lik1 - mog_lik2)).exp().sum(dim=-1)+const).log()
     
