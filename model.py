@@ -62,7 +62,7 @@ class Window(nn.Module):
         gravity = -beta.unsqueeze(2)*(kappa.unsqueeze(2).repeat(1, 1, self.padded_text_len + 1)-indices)**2
         phi = (alpha.unsqueeze(2) * gravity.exp()).sum(dim=1)*(self.padded_text_len/text_lens)
         
-        w = (phi.narrow(-1, 0, self.text_len).unsqueeze(2) * onehots).sum(dim=1) 
+        w = (phi.narrow(-1, 0, self.padded_text_len).unsqueeze(2) * onehots).sum(dim=1) 
         return w, kappa, phi
 
 class LSTM1(nn.Module):
