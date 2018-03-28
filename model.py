@@ -4,6 +4,8 @@ from torch.autograd import Variable
 import torch.nn as nn
 import torch.nn.functional as F
 
+cuda = torch.cuda.is_available()
+
 # 2-layer lstm with mixture of gaussian parameters as outputs
 # with skip connections
 class LSTMRandWriter(nn.Module):
@@ -56,7 +58,7 @@ class Window(nn.Module):
     def __init__(self, padded_text_len, cell_size, K):
         super(Window, self).__init__()
         self.linear = nn.Linear(cell_size, 3*K)
-        self.padded_text_len = text_len
+        self.padded_text_len = padded_text_len
         
     def forward(self, x, kappa_old, onehots, text_lens):
         params = self.linear(x).exp()
